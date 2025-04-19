@@ -1,0 +1,18 @@
+{
+  "name": "mcp-dice-roller",
+  "version": "1.0.0",
+  "description": "A simple dice roller for tabletop RPGs",
+  "main": "diceRoller.js",
+  "scripts": {
+    "start": "echo \"Open index.html in your browser to use the dice roller\" && exit 0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dice",
+    "rpg",
+    "tabletop",
+    "game"
+  ],
+  "author": "nkmrrrr",
+  "license": "MIT"
+}
