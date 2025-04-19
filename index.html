@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Dice Roller</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .dice-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .die-result {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>MCP Dice Roller</h1>
+    
+    <div class="dice-container">
+        <div class="input-group">
+            <label for="diceNotation">Dice Notation:</label>
+            <input type="text" id="diceNotation" placeholder="e.g., 2d6, 1d20" value="1d6">
+        </div>
+        
+        <button id="rollButton">Roll Dice</button>
+        
+        <div class="input-group">
+            <label for="customDice">Custom Dice:</label>
+            <input type="number" id="diceCount" min="1" value="1" style="width: 50px;">
+            <span>d</span>
+            <input type="number" id="diceSides" min="1" value="6" style="width: 50px;">
+        </div>
+        
+        <button id="customRollButton">Roll Custom Dice</button>
+        
+        <div class="results">
+            <h3>Results</h3>
+            <div id="diceResults"></div>
+            <div id="totalResult"></div>
+        </div>
+    </div>
+    
+    <script src="diceRoller.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rollButton = document.getElementById('rollButton');
+            const customRollButton = document.getElementById('customRollButton');
+            const diceResults = document.getElementById('diceResults');
+            const totalResult = document.getElementById('totalResult');
+            
+            // Roll using dice notation
+            rollButton.addEventListener('click', function() {
+                const notation = document.getElementById('diceNotation').value;
+                try {
+                    const result = parseDiceNotation(notation);
+                    displayResults(result);
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+            
+            // Roll using custom dice inputs
+            customRollButton.addEventListener('click', function() {
+                const count = parseInt(document.getElementById('diceCount').value, 10);
+                const sides = parseInt(document.getElementById('diceSides').value, 10);
+                
+                if (isNaN(count) || count < 1 || isNaN(sides) || sides < 1) {
+                    alert('Please enter valid numbers for dice count and sides.');
+                    return;
+                }
+                
+                const result = rollDice(count, sides);
+                displayResults(result);
+            });
+            
+            // Display dice results
+            function displayResults(result) {
+                diceResults.innerHTML = '';
+                result.results.forEach(roll => {
+                    const dieEl = document.createElement('div');
+                    dieEl.className = 'die-result';
+                    dieEl.textContent = roll;
+                    diceResults.appendChild(dieEl);
+                });
+                
+                totalResult.textContent = `Total: ${result.total}`;
+            }
+            
+            // Initial roll
+            const result = rollDice(1, 6);
+            displayResults(result);
+        });
+    </script>
+</body>
+</html>
